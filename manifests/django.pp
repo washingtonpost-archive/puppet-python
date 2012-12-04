@@ -15,11 +15,11 @@
 
 define python::django(
     $source,
-    $requirements,
     $repo_name,
     $settings_module,
     $location,
-    $vhost=undef,
+    $vhost,
+    $requirements='requirements.txt',
     $pythonpath=[],
     $upgrade=false,
     $code_path="${python::params::location}",

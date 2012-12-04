@@ -1,6 +1,6 @@
 define python::environment(
     $env_name,
-    $requirements='requirements.txt',
+    $requirements,
     $upgrade=true,
     $pythonpath=[],
 ) {
