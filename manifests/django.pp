@@ -41,7 +41,8 @@ define python::django(
         vhost => $vhost,
         proxy => "unix:/tmp/uwsgi.${name}.sock",
         uwsgi => true,
-        location => $location,
+        location => "${location}/",
+        uwsgi_params => ["SCRIPT_NAME ${location}"],
         require => Uwsgi::Instance::Basic[$name]
     }
 
