@@ -9,6 +9,7 @@ define python::environment(
     } else {
         $pip_upgrade = ''
     }
+
     # Create the virtualenv
     exec {"venv_init_${name}":
         command => "${python::params::init_venv_script} ${python::params::location}${env_name}",
@@ -20,7 +21,7 @@ define python::environment(
     file {"add_to_path_${name}":
         ensure => present,
         path => "${python::params::location}${env_name}/lib/python2.7/site-packages/extra.pth",
-        content => template('django/pythonpath.erb'),
+        content => template('python/pythonpath.erb'),
         require => Exec["venv_init_${name}"],
     }
 

@@ -1,4 +1,4 @@
-class django::package inherits django::params {
+class python::package inherits python::params {
     # Required to install pip
     exec { "update_aptitude":
         command => "/usr/bin/apt-get update --fix-missing",

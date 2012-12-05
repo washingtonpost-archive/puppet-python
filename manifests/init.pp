@@ -1,4 +1,4 @@
-class django {
+class python {
 
     class {'python::package':}
 

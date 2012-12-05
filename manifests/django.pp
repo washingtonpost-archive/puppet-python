@@ -1,6 +1,3 @@
-# Master Puppet manifest a django box running on Ubuntu Precise (12.04)
-
-
 # Usage:
 
 # Call the webapp method and pass the correct parameters in order for it to install
@@ -45,6 +42,7 @@ define python::django(
         proxy => "unix:/tmp/uwsgi.${name}.sock",
         uwsgi => true,
         location => $location,
+        require => Uwsgi::Instance::Basic[$name]
     }
 
     # Clone the code repo
@@ -52,7 +50,9 @@ define python::django(
         repo_name => $repo_name,
         source => $source,
         path => $code_path,
-        user => "${python::params::user}"
+        user => "${python::params::user}",
+        require => Uwsgi::Instance::Basic[$name]
+
     }
 
     # Initialize the environment and install requirements
@@ -63,6 +63,7 @@ define python::django(
         pythonpath => $pythonpath,
         # Include uwsgi (in order to notify the service that the requirements have finished installing)
         notify => Class['uwsgi::service'],
+        require => Git::Commands::Clone[$name]
 
     }
 }
