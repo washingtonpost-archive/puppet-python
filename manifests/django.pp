@@ -1,14 +1,4 @@
-# Usage:
-
-# Call the webapp method and pass the correct parameters in order for it to install
-
-# python::django {'VIRTUAL_ENV_NAME':
-#     requirements => 'LOCATION_OF_REQUIREMENTS_FILE (INSIDE REPO)',
-#     source => 'GIT_REPO',
-#     code_path => 'WHERE_CODE_LIVES',
-# }
-
-
+# python::django
 
 define python::django(
     $source,
@@ -16,7 +6,6 @@ define python::django(
     $settings_module,
     $location,
     $vhost,
-    $requirements='requirements.txt',
     $pythonpath=[],
     $upgrade=false,
     $code_path="${python::params::location}",
@@ -29,7 +18,7 @@ define python::django(
     # An additional param, pythonpath, should probably be added.
     uwsgi::instance::basic {$name:
         params => {
-            'chdir' => "\"${code_path}${repo_name}/\"",
+            'chdir' => "\"${code_path}${name}\"",
             'home' => "\"${code_path}${name}\"",
             'env' => "\"DJANGO_SETTINGS_MODULE=${settings_module}\"",
             'module' => '"django.core.handlers.wsgi:WSGIHandler()"'
@@ -46,25 +35,12 @@ define python::django(
         require => Uwsgi::Instance::Basic[$name]
     }
 
-    # Clone the code repo
-    git::commands::clone { $name:
-        repo_name => $repo_name,
-        source => $source,
-        path => $code_path,
-        user => "${python::params::user}",
-        require => Uwsgi::Instance::Basic[$name]
-
-    }
-
     # Initialize the environment and install requirements
     python::environment { $name:
-        env_name => $name,
-        upgrade => $upgrade,
-        requirements => "${code_path}${repo_name}/${requirements}",
+        source => $source,
         pythonpath => $pythonpath,
         # Include uwsgi (in order to notify the service that the requirements have finished installing)
         notify => Class['uwsgi::service'],
-        require => Git::Commands::Clone[$name]
-
+        require => Uwsgi::Instance::Basic[$name]
     }
 }
