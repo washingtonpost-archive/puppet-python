@@ -41,7 +41,7 @@ define python::flask(
 
     # Initialize the environment and install requirements
     python::environment { $name:
-        source => $source
+        source => $source,
         pythonpath => $pythonpath,
         # Include uwsgi (in order to notify the service that the requirements have finished installing)
         notify => Class['uwsgi::service'],
