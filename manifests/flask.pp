@@ -22,8 +22,8 @@ define python::flask(
             'chdir' => "\"${code_path}${repo_name}/\"",
             'home' => "\"${code_path}${name}\"",
             'env' => "\"FLASK_ENV=${flask_config}\"",
-            'module' => "${name}",
-            'callable' => $callable
+            'module' => "\"${name}\"",
+            'callable' => "\"${callable\"",
 
         }
     }
