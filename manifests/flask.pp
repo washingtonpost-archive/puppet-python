@@ -23,7 +23,7 @@ define python::flask(
             'home' => "\"${code_path}${name}\"",
             'env' => "\"FLASK_ENV=${flask_config}\"",
             'module' => "\"${name}\"",
-            'callable' => "\"${callable\"",
+            'callable' => "\"${callable}\"",
 
         }
     }
