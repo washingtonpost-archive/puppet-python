@@ -31,7 +31,7 @@ define python::flask(
     # Create an nginx instance
     nginx::resource::location { $name:
         vhost => $vhost,
-        proxy => "unix:/tmp/flask.${name}.sock",
+        proxy => "unix:/tmp/uwsgi.${name}.sock",
         uwsgi => true,
         location => "${location}/",
         uwsgi_params => ["SCRIPT_NAME ${location}"],
