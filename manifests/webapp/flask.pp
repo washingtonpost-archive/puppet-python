@@ -1,11 +1,12 @@
-# python::flask
+# python::webapp::flask
 
-define python::flask(
-    $source,
-    $repo_name,
+define python::webapp::flask(
     $flask_config,
     $location,
     $vhost,
+    $source=undef,
+    $repo_name=undef,
+    $requirements='requirements.txt',
     $pythonpath=[],
     $upgrade=false,
     $callable='app',
@@ -39,13 +40,24 @@ define python::flask(
         require => Uwsgi::Instance::Basic[$name]
     }
 
-    # Initialize the environment and install requirements
-    python::environment { $name:
-        source => $source,
-        pythonpath => $pythonpath,
-        # Include uwsgi (in order to notify the service that the requirements have finished installing)
-        notify => Class['uwsgi::service'],
-        require => Uwsgi::Instance::Basic[$name]
+    # If config is false, then it also clones the repo and sets up the environment
+    if ($config_only == false) {
+        # Clone the code repo
+        git::commands::clone { $name:
+            repo_name => $repo_name,
+            source => $source,
+            path => $code_path,
+            user => "${python::params::user}",
+            require => Uwsgi::Instance::Basic[$name]
+        }
 
+        # Initialize the environment and install requirements
+        python::environment { $name:
+            source => $source,
+            requirements => "${code_path}${repo_name}/${requirements}",
+            pythonpath => $pythonpath,
+            notify => Class['uwsgi::service'],
+            require => Git::Commands::Clone[$name]
+        }
     }
 }
