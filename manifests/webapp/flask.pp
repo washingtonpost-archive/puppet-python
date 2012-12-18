@@ -7,8 +7,8 @@ define python::webapp::flask(
     $source=undef,
     $repo_name=undef,
     $requirements='requirements.txt',
+    $config_only=false,
     $pythonpath=[],
-    $upgrade=false,
     $callable='app',
     $code_path="${python::params::location}",
 ) {
