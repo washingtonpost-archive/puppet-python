@@ -32,7 +32,7 @@ define python::flask(
     uwsgi::instance::basic {$name:
         params => {
             'chdir' => "\"${code_path}${repo_name}/${pkg}/\"",
-            'home' => "\"${code_path}${name}/${pkg}/\"",
+            'home' => "\"${code_path}${repo_name}/${pkg}/\"",
             'env' => "\"FLASK_ENV=${flask_config}\"",
             'module' => "\"${name}\"",
             'callable' => "\"${callable}\"",
