@@ -17,6 +17,7 @@ define python::flask(
     $pkg,
     $location,
     $vhost,
+    $callable='app',
     $requirements='requirements.txt',
     $pythonpath=[],
     $upgrade=false,
