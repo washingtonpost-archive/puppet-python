@@ -31,8 +31,8 @@ define python::flask(
     # An additional param, pythonpath, should probably be added.
     uwsgi::instance::basic {$name:
         params => {
-            'chdir' => "\"${code_path}${repo_name}/${pkg}/\"",
-            'home' => "\"${code_path}${repo_name}/${pkg}/\"",
+            'chdir' => "\"${code_path}${name}\"",
+            'home' => "\"${code_path}${name}\"",
             'env' => "\"FLASK_ENV=${flask_config}\"",
             'module' => "\"${name}\"",
             'callable' => "\"${callable}\"",
