@@ -14,7 +14,6 @@ define python::flask(
     $source,
     $repo_name,
     $flask_config,
-    $pkg,
     $location,
     $vhost,
     $callable='app',
@@ -63,7 +62,7 @@ define python::flask(
     python::environment { $name:
         env_name => $name,
         upgrade => $upgrade,
-        requirements => "${code_path}${repo_name}/${pkg}/${requirements}",
+        requirements => "${code_path}${repo_name}/${requirements}",
         pythonpath => $pythonpath,
         # Include uwsgi (in order to notify the service that the requirements have finished installing)
         notify => Class['uwsgi::service'],
