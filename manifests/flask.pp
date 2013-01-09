@@ -19,6 +19,7 @@ define python::flask(
     $callable='app',
     $requirements='requirements.txt',
     $pythonpath=[],
+    $additional_options=[],
     $upgrade=false,
     $code_path="${python::params::location}",
 ) {
@@ -45,6 +46,7 @@ define python::flask(
         uwsgi => true,
         location => "${location}/",
         uwsgi_params => ["SCRIPT_NAME ${location}"],
+        additional_options => $additional_options,
         require => Uwsgi::Instance::Basic[$name]
     }
 
