@@ -9,6 +9,7 @@ define python::webapp::flask(
     $requirements='requirements.txt',
     $config_only=false,
     $pythonpath=[],
+    $additional_options=[],
     $callable='app',
     $code_path="${python::params::location}",
 ) {
@@ -37,6 +38,7 @@ define python::webapp::flask(
         location => "${location}/",
         uwsgi_params => ["SCRIPT_NAME ${location}"],
         notify => Class['nginx::service'],
+        additional_options => $additional_options,
         require => Uwsgi::Instance::Basic[$name]
     }
 

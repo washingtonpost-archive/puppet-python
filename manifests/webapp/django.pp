@@ -9,6 +9,7 @@ define python::webapp::django(
     $requirements='requirements.txt',
     $config_only=false,
     $pythonpath=[],
+    $additional_options=[],
     $upgrade=false,
     $code_path="${python::params::location}",
 ) {
@@ -34,6 +35,7 @@ define python::webapp::django(
         uwsgi => true,
         location => "${location}/",
         uwsgi_params => ["SCRIPT_NAME ${location}"],
+        additional_options => $additional_options,
         require => Uwsgi::Instance::Basic[$name]
     }
 
