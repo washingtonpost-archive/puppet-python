@@ -1,6 +1,5 @@
 class python::package {
   anchor { 'python::package::begin': }
-  anchor { 'python::package::end': }
 
   case $operatingsystem {
     # centos,fedora,rhel: {
@@ -21,5 +20,7 @@ class python::package {
     #     before  => Anchor['python::package::end'],
     #   }
     # }
+    anchor { 'python::package::end': }
+
   }
 }
