@@ -1,43 +1,26 @@
-class python::package inherits python::params {
-    # Required to install pip
-    exec { "update_aptitude":
-        command => "/usr/bin/apt-get update --fix-missing",
-    }
+class python::package {
+  anchor { 'python::package::begin': }
 
-    package{'python-setuptools':
-        ensure => present,
-        require => Exec['update_aptitude']
+  case $operatingsystem {
+    # centos,fedora,rhel: {
+    #   class { 'python::package::redhat':
+    #     require => Anchor['python::package::begin'],
+    #     before  => Anchor['python::package::end'],
+    #   }
+    # }
+    debian,ubuntu: {
+      class { 'python::package::debian':
+        require => Anchor['python::package::begin'],
+        before  => Anchor['python::package::end'],
+      }
     }
+    # opensuse,suse: {
+    #   class { 'python::package::suse':
+    #     require => Anchor['python::package::begin'],
+    #     before  => Anchor['python::package::end'],
+    #   }
+    # }
+    anchor { 'python::package::end': }
 
-    # Required for normal package installation and virtualenv
-    package{'python-pip':
-        ensure=> present,
-        require => Package['python-setuptools']
-    }
-
-    # C packages for python libs
-    package{$python_c_packages:
-        ensure=> present,
-        require => Exec['update_aptitude']
-    }
-
-    # Extra C packages
-    package{$extra_c_packages:
-        ensure=> present,
-        require => Exec['update_aptitude']
-    }
-
-    file { $log:
-        ensure => directory,
-        owner => $user,
-        group => $group,
-        mode => 647,
-    }
-
-    # Install virtualenv/virtualenvwrapper
-    exec {'virtualenv':
-        command => 'pip install virtualenv virtualenvwrapper',
-        path => $path,
-        require => Package['python-pip'],
-    }
+  }
 }
