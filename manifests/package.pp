@@ -20,7 +20,9 @@ class python::package {
     #     before  => Anchor['python::package::end'],
     #   }
     # }
-    anchor { 'python::package::end': }
 
   }
+
+  anchor { 'python::package::end': }
+
 }
